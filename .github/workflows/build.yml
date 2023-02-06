@@ -1,0 +1,52 @@
+name: Deploy OpenAI2Scratch
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: LLK/scratch-gui
+          ref: develop
+      - run: npm install
+      - uses: actions/checkout@v3
+        with:
+          path: ./openai2scratch
+      - run: sh ./openai2scratch/install.sh
+      - run: npm run build
+      - name: npm install under openai2scratch
+        run: npm install
+        working-directory: ./openai2scratch
+      - name: Build openai2scratch.mjs for xcratch
+        run: npm run build
+        working-directory: ./openai2scratch
+      - name: Copy openai2scratch.mjs to build folder
+        run: cp ./openai2scratch/dist/openai2scratch.mjs ./build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'build'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
