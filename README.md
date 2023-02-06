@@ -8,3 +8,12 @@ OpenAI2scratchをオープンソースかつ無料で提供します。継続し
 # OpenAI2Scratch
 
 Use the OpenAI API to get a response to the text you send.
+
+### Xcratchからの利用
+
+[Xcratch](https://xcratch.github.io/) をブラウザで開き、「エディターを開く」を選んだあと、「拡張機能を選ぶ」画面から「拡張機能を読み込む」を選びます。
+URL入力欄に https://champierre.github.io/openai2scratch/openai2scratch.mjs を入力するとOpenAI2Scratchを開くことができます。
+
+### Stretch3からの利用
+
+TODO
